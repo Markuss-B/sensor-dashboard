@@ -1,0 +1,32 @@
+<div class="search-box mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search..."
+      [(ngModel)]="searchTerm"
+    />
+  </div>
+  
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns">{{ col.label }}</th>
+        <th *ngIf="actions.length">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of filteredData">
+        <td *ngFor="let col of columns">{{ row[col.key] }}</td>
+        <td *ngIf="actions.length">
+          <button
+            *ngFor="let action of actions"
+            class="btn btn-link"
+            (click)="onActionClick(action, row)"
+          >
+            {{ action }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

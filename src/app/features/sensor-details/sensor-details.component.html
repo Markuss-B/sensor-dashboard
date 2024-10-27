@@ -1,0 +1,19 @@
+<div *ngFor="let measurementType of seriesData | keyvalue" style="margin-bottom: 20px;">
+    <h3>{{ measurementType.key | titlecase }} Chart</h3>
+    <div style="display: block; width: 100%; height: 400px;">
+      <ngx-charts-line-chart
+        [view]="[700, 400]"
+        [scheme]="colorScheme"
+        [results]="measurementType.value"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="false"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="'Timestamp'"
+        [yAxisLabel]="'Value'"
+        [autoScale]="true">
+      </ngx-charts-line-chart>
+    </div>
+  </div>
+  

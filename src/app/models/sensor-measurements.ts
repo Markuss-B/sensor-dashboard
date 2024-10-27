@@ -1,10 +1,18 @@
 import { Sensor } from "./sensor";
 
 export interface SensorMeasurements {
-    id: string;
-    timestamp: string;
     sensorId: string;
-    sensor: Sensor;
+    timestamp: Date;
+    measurements: Record<string, any>;
+}
+
+export interface SensorMeasurementsFixed {
+    sensorId: string;
+    timestamp: Date;
+    measurements: Measurement[];
+}
+
+export interface Measurement {
     co2: number;
     temperature: number;
     battery: number;

@@ -9,7 +9,7 @@ import { SensorMeasurements } from '../models/sensor-measurements';
 })
 export class SensorService {
 
-  private apiUrl = 'https://localhost:5223/api/Sensor';
+  private apiUrl = 'http://localhost:5223/api/Sensor';
 
   constructor(private http: HttpClient) { }
 
@@ -26,6 +26,6 @@ export class SensorService {
   }
 
   getSensorMeasurments(sensorId: string, dateFrom?: Date, dateTo?: Date): Observable<SensorMeasurements[]> {
-    return this.http.get<SensorMeasurements[]>(`${this.apiUrl}/${sensorId}/measurments?dateFrom=${dateFrom}&dateTo${dateTo}`);
+    return this.http.get<SensorMeasurements[]>(`${this.apiUrl}/${sensorId}/measurments?dateFrom=${dateFrom ?? ''}&dateTo=${dateTo ?? ''}`);
   }
 }
