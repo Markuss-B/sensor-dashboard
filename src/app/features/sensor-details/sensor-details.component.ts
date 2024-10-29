@@ -1,125 +1,119 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
 import { SensorService } from '../../services/sensor.service';
 import { SensorMeasurements } from '../../models/sensor-measurements';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
-export interface ChartDataPoint {
-  name: string;
-  value: number;
-}
-
-export interface ChartSeries {
-  name: string;
-  series: ChartDataPoint[];
+interface TransformedMeasurement {
+	name: string;
+	series: { name: string; value: string }[];
 }
 
 @Component({
-  selector: 'app-sensor-details',
-  standalone: true,
-  imports: [NgxChartsModule],
-  templateUrl: './sensor-details.component.html',
-  styleUrls: ['./sensor-details.component.css']
+	selector: 'app-sensor-details',
+	standalone: true,
+	imports: [CommonModule, NgxChartsModule],
+	templateUrl: './sensor-details.component.html',
+	styleUrls: ['./sensor-details.component.css']
 })
 export class SensorDetailsComponent {
-  constructor(
-    private sensorService: SensorService,
-    private route: ActivatedRoute,
-    private cd: ChangeDetectorRef
-  ) { }
 
-  measurements: SensorMeasurements[] = [];
-  seriesData: { [key: string]: ChartSeries[] } = {};
+	constructor(
+		private sensorService: SensorService,
+		private route: ActivatedRoute
+	) { }
 
-  colorScheme: Color = {
-    name: 'custom',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
+	sensorData: TransformedMeasurement[] = [];
 
-  private updateSubscription: Subscription | undefined;
+	view: [number, number] = [700, 400];
 
-  ngOnInit(): void {
-    const sensorId = this.route.snapshot.paramMap.get('id');
+	// Color scheme for the chart
+	colorScheme: Color = {
+		name: 'customScheme',
+		selectable: true,
+		group: ScaleType.Ordinal,
+		domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
+	};
 
-    if (!sensorId) return;
+	lastdate = new Date('2025-10-03');
 
-    this.sensorService.getSensorMeasurments(sensorId).subscribe(data => {
-      this.measurements = data;
-      this.seriesData = this.transformData(data);
-      console.log(this.seriesData);
-    });
+	ngOnInit(): void {
+		var sensorId = this.route.snapshot.paramMap.get('id');
 
-    // Subscribe to real-time updates
-    this.sensorService.subscribeToSensor(sensorId);
-    this.updateSubscription = this.sensorService.getSensorUpdates().subscribe(update => {
-      if (update) {
-        this.handleRealTimeUpdate(update);
-      }
-    });
-  }
+		if (!sensorId)
+			return;
 
-  ngOnDestroy(): void {
-    this.updateSubscription?.unsubscribe();
-    this.sensorService.unsubscribeFromSensor(this.route.snapshot.paramMap.get('id')!);
-  }
+		this.sensorService.getSensorMeasurments(sensorId).subscribe(data => {
+			this.sensorData = this.transformData(data);
+			console.log(this.sensorData[0]);
+		});
+	}
 
-  private transformData(measurements: SensorMeasurements[]) {
-    // sort the measurements by timestamp
-    measurements.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+	trackByMeasurement(index: number, measurement: TransformedMeasurement): string {
+		return measurement.name;
+	}
 
-    const measurementTypes = Object.keys(measurements[0].measurements);
+	transformData(data: SensorMeasurements[]): TransformedMeasurement[] {
+		return Object.keys(data[0].measurements).map((measurementName) => ({
+			name: measurementName,
+			series: data.map((item) => ({
+				name: item.timestamp.toString(),
+				value: item.measurements[measurementName as keyof typeof item.measurements]
+			}))
+		}));
+	}
 
-    // Create separate series for each measurement type
-    const seriesData = measurementTypes.reduce((acc, measurementType) => {
-      acc[measurementType] = [{
-        name: measurementType.charAt(0).toUpperCase() + measurementType.slice(1),
-        series: measurements.map(data => ({
-          name: new Date(data.timestamp).toLocaleString(),
-          value: parseFloat(data.measurements[measurementType])
-        }))
-      }];
-      return acc;
-    }, {} as { [key: string]: ChartSeries[] });
+	updateData(newData: TransformedMeasurement): void {
+		{
+			const existingMeasurement = this.sensorData.find(measurement => measurement.name === newData.name);
 
-    return seriesData;
-  }
+			if (existingMeasurement) {
+				// If a matching measurement is found, update its series
+				this.sensorData = this.sensorData.map((measurement) => {
+					if (measurement.name === newData.name) {
+						return {
+							...measurement,
+							series: [
+								...measurement.series,
+								{
+									name: newData.series[0].name,
+									value: newData.series[0].value
+								}
+							]
+						};
+					} else {
+						return measurement;
+					}
+				});
+			} else {
+				// If no matching measurement, add newData as a new chart
+				this.sensorData = [
+					...this.sensorData,
+					{
+						name: newData.name,
+						series: newData.series
+					}
+				];
+			}
+		}
+	}
 
-  private handleRealTimeUpdate(update: SensorMeasurements) {
-    console.log(update);
+	addMockData() {
+		// Increment last date correctly by 1 day
+		this.lastdate.setDate(this.lastdate.getDate() + 1);
+		const lastdateString = this.lastdate.toString();
 
-    // Deep clone the seriesData
-    const newSeriesData = JSON.parse(JSON.stringify(this.seriesData));
+		const newData: TransformedMeasurement = {
+			name: 'temp',
+			series: [
+				{
+					name: lastdateString,
+					value: Math.floor(Math.random() * 100).toString()
+				}
+			]
+		};
 
-    const measurementTypes = Object.keys(update.measurements);
-
-    measurementTypes.forEach(measurementType => {
-      const newPoint = {
-        name: new Date(update.timestamp).toLocaleString(),
-        value: parseFloat(update.measurements[measurementType])
-      };
-
-      // Add the new point to the cloned data
-      const series = newSeriesData[measurementType][0].series;
-      series.push(newPoint);
-
-      // Optional: Limit series length
-      if (series.length > 50) {
-        series.shift();
-      }
-    });
-
-    // Reassign seriesData
-    this.seriesData = newSeriesData;
-
-    // Mark for check to trigger change detection
-    this.cd.markForCheck();
-  }
-
-  // Optional: Implement trackBy function if needed
-  trackByIndex(index: number): number {
-    return index;
-  }
+		this.updateData(newData);
+	}
 }

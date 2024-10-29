@@ -1,20 +1,17 @@
-<div *ngFor="let measurementType of seriesData | keyvalue" style="margin-bottom: 20px;">
-  <h3>{{ measurementType.key | titlecase }} Chart</h3>
-  <div style="display: block; width: 100%; height: 400px;">
-    <ngx-charts-line-chart
-      [view]="[700, 400]"
-      [scheme]="colorScheme"
-      [results]="measurementType.value"
-      [xAxis]="true"
-      [yAxis]="true"
-      [legend]="false"
-      [showXAxisLabel]="true"
-      [showYAxisLabel]="true"
-      [xAxisLabel]="'Timestamp'"
-      [yAxisLabel]="'Value'"
-      [autoScale]="true"
-      [animations]="true"
-    >
-    </ngx-charts-line-chart>
-  </div>
+<button (click)="addMockData()">Add Data</button>
+
+<div *ngFor="let measurement of sensorData; trackBy: trackByMeasurement">
+  <ngx-charts-line-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="[measurement]"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    xAxisLabel="Date"
+    yAxisLabel="Value"
+    [autoScale]="true">
+  </ngx-charts-line-chart>
 </div>
