@@ -4,6 +4,7 @@ import { SensorService } from '../../services/sensor.service';
 import { SensorMeasurements } from '../../models/sensor-measurements';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SensorHubService } from '../../services/sensor-hub.service';
 
 interface TransformedMeasurement {
 	name: string;
@@ -21,7 +22,8 @@ export class SensorDetailsComponent {
 
 	constructor(
 		private sensorService: SensorService,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private sensorHub: SensorHubService
 	) { }
 
 	sensorData: TransformedMeasurement[] = [];
@@ -36,8 +38,6 @@ export class SensorDetailsComponent {
 		domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
 	};
 
-	lastdate = new Date('2025-10-03');
-
 	ngOnInit(): void {
 		var sensorId = this.route.snapshot.paramMap.get('id');
 
@@ -48,6 +48,23 @@ export class SensorDetailsComponent {
 			this.sensorData = this.transformData(data);
 			console.log(this.sensorData[0]);
 		});
+
+		this.sensorHub.subscribeToSensor(sensorId);
+
+		this.sensorHub.getSensorUpdates().subscribe((update) => {
+			console.log(update);
+			if (update)
+				this.updateData(this.transformData([update])[0]);
+		});
+	}
+
+	ngOnDestroy(): void {
+		var sensorId = this.route.snapshot.paramMap.get('id');
+
+		if (!sensorId)
+			return;
+
+		this.sensorHub.unsubscribeFromSensor(sensorId);
 	}
 
 	trackByMeasurement(index: number, measurement: TransformedMeasurement): string {
@@ -98,6 +115,8 @@ export class SensorDetailsComponent {
 			}
 		}
 	}
+
+	lastdate = new Date('2025-10-03');
 
 	addMockData() {
 		// Increment last date correctly by 1 day
