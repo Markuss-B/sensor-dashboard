@@ -11,7 +11,7 @@ export class SensorHubService {
 	private sensorMeasurementsSubject = new BehaviorSubject<SensorMeasurements | null>(null);
 	private connectionPromise: Promise<void>;
 
-	private hubUrl = 'http://localhost:5223/sensorhub';
+	private hubUrl = 'http://localhost:5291/sensorhub';
 
 	constructor() {
 		this.hubConnection = new signalR.HubConnectionBuilder()

@@ -40,11 +40,12 @@ export class SensorDetailsComponent {
 
 	ngOnInit(): void {
 		var sensorId = this.route.snapshot.paramMap.get('id');
+		var collectionPrefix = this.route.snapshot.paramMap.get('collectionPrefix');
 
-		if (!sensorId)
+		if (!sensorId || !collectionPrefix)
 			return;
 
-		this.sensorService.getSensorMeasurments(sensorId).subscribe(data => {
+		this.sensorService.getSensorMeasurments(collectionPrefix, sensorId).subscribe(data => {
 			this.sensorData = this.transformData(data);
 			console.log(this.sensorData[0]);
 		});
@@ -54,7 +55,12 @@ export class SensorDetailsComponent {
 		this.sensorHub.getSensorUpdates().subscribe((update) => {
 			console.log(update);
 			if (update)
-				this.updateData(this.transformData([update])[0]);
+			{
+				var transformedData = this.transformData([update]);
+				transformedData.forEach((measurement) => {
+					this.updateData(measurement);
+				});
+			}
 		});
 	}
 

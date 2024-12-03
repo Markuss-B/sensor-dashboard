@@ -7,35 +7,33 @@ import { Router } from '@angular/router';
 import { SensorDetailsComponent } from '../sensor-details/sensor-details.component';
 
 @Component({
-  selector: 'app-sensor-list',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './sensor-list.component.html',
-  styleUrl: './sensor-list.component.css'
+	selector: 'app-sensor-list',
+	standalone: true,
+	imports: [TableComponent],
+	templateUrl: './sensor-list.component.html',
+	styleUrl: './sensor-list.component.css'
 })
 export class SensorListComponent {
 
-  constructor(private sensorService: SensorService, private router: Router) { }
+	constructor(private sensorService: SensorService, private router: Router) { }
 
-  sensors: Sensor[] = [];
+	sensors: Sensor[] = [];
 
-  ngOnInit(): void {
-    this.sensorService.getSensors().subscribe(sensors => {
-      this.sensors = sensors;
-    }
-    );
-  }
+	ngOnInit(): void {
+		this.sensorService.getSensors().subscribe(sensors => {
+			this.sensors = sensors;
+		});
+	}
 
-  tableColumns = [
-    { key: 'id', label: 'Id' },
-    { key: 'name', label: 'Name' },
-    { key: 'group', label: 'Group' }
-  ];
-  
-  handleAction(event: { action: string, row: any }) {
-    console.log(event);
-    if (event.action === 'View') {
-      this.router.navigate(['/sensor', event.row.id]);
-    }
-  }
+	tableColumns = [
+		{ key: 'id', label: 'Id' },
+		{ key: 'collectionPrefix', label: 'CollectionPrefix' },
+	];
+
+	handleAction(event: { action: string, row: any }) {
+		console.log(event);
+		if (event.action === 'View') {
+			this.router.navigate(['/sensor', event.row.collectionPrefix, event.row.id]);
+		}
+	}
 }
