@@ -5,7 +5,19 @@
   "projects": {
     "SensorDashboard": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "path": "src/app/features",
+          "flat": false
+        },
+	    "@schematics/angular:service": {
+          "path": "src/app/services",
+          "flat": true
+        },
+        "@schematics/angular:interface": {
+          "path": "src/app/models"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
