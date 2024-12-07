@@ -11,7 +11,7 @@ import { SensorHubService } from '../../services/sensor-hub.service';
  */
 interface TransformedMeasurement {
 	name: string;
-	series: { name: string; value: string }[];
+	series: { name: string; value: string }[]; // name: timestamp, value: measurement value
 }
 
 @Component({
@@ -37,8 +37,6 @@ export class SensorDetailsComponent {
 
 	sensorData: TransformedMeasurement[] = [];
 
-	view: [number, number] = [700, 400];
-
 	// Color scheme for the chart
 	colorScheme: Color = {
 		name: 'customScheme',
@@ -58,8 +56,8 @@ export class SensorDetailsComponent {
 			// console.log(this.sensorData[0]);
 		});
 
+		// Subscribe to sensor measurement updates. The webapi will push updates to the client when new measurements are available.
 		this.sensorHub.subscribeToSensor(sensorId);
-
 		this.sensorHub.getSensorUpdates().subscribe((update) => {
 			console.log(update);
 			if (update)
@@ -85,7 +83,13 @@ export class SensorDetailsComponent {
 		return measurement.name;
 	}
 
-	transformData(data: SensorMeasurements[]): TransformedMeasurement[] {
+
+	/**
+	 * Transforms the sensor data into a format that can be visualized in a chart.
+	 * @param data 
+	 * @returns 
+	 */
+	private transformData(data: SensorMeasurements[]): TransformedMeasurement[] {
 		return Object.keys(data[0].measurements).map((measurementName) => ({
 			name: measurementName,
 			series: data.map((item) => ({

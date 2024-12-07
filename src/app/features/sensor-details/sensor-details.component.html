@@ -1,6 +1,5 @@
 <div *ngFor="let measurement of sensorData; trackBy: trackByMeasurement">
   <ngx-charts-line-chart
-    [view]="view"
     [scheme]="colorScheme"
     [results]="[measurement]"
     [xAxis]="true"
@@ -10,6 +9,7 @@
     [showYAxisLabel]="true"
     xAxisLabel="Date"
     yAxisLabel="Value"
+    [rotateXAxisTicks]="true"
     [autoScale]="true">
   </ngx-charts-line-chart>
 </div>
