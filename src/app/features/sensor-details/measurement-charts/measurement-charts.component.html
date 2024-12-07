@@ -1,0 +1,18 @@
+<div *ngFor="let measurement of sensorData; trackBy: trackByMeasurement">
+    <ngx-charts-line-chart
+      [scheme]="colorScheme"
+      [results]="[measurement]"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="true"
+      [legendPosition]="legendPosition"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Date"
+      yAxisLabel="Value"
+      [rotateXAxisTicks]="true"
+      [xAxisTickFormatting]="xAxisDateFormatter"
+      [wrapTicks]="false"
+      [autoScale]="true">
+    </ngx-charts-line-chart>
+  </div>

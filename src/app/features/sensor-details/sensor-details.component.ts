@@ -6,21 +6,17 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SensorHubService } from '../../services/sensor-hub.service';
 import { LegendPosition } from '@swimlane/ngx-charts';
-
-/**
- * Represents a transformed sensor measurement data that is ready to be visualized in a chart.
- */
-interface TransformedMeasurement {
-	name: string;
-	series: { name: string; value: string }[]; // name: timestamp, value: measurement value
-}
+import { MeasurementChartsComponent } from "./measurement-charts/measurement-charts.component";
+import { Sensor } from '@models/sensor';
+import { FormGroup } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'app-sensor-details',
 	standalone: true,
-	imports: [CommonModule, DatePipe, NgxChartsModule],
+	imports: [CommonModule, MeasurementChartsComponent, FormsModule],
 	templateUrl: './sensor-details.component.html',
-	styleUrls: ['./sensor-details.component.css'],
+	styleUrls: ['./sensor-details.component.scss'],
 })
 
 /**
@@ -28,121 +24,59 @@ interface TransformedMeasurement {
  * It subscribes to sensor data updates and transforms the data for visualization.
  */
 export class SensorDetailsComponent {
-
 	constructor(
 		private sensorService: SensorService,
 		private route: ActivatedRoute,
-		private sensorHub: SensorHubService,
-		private datePipe: DatePipe
 	) { }
 
-	sensorData: TransformedMeasurement[] = [];
+	sensor!: Sensor;
 
-	legendPosition = LegendPosition.Right; // Position of the legend
-
-	// Color scheme for the chart
-	colorScheme: Color = {
-		name: 'customScheme',
-		selectable: true,
-		group: ScaleType.Ordinal,
-		domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
-	};
+	isEditing: boolean = false;
+	isSubmitting: boolean = false;
+	submitError: boolean = false;
 
 	ngOnInit(): void {
-		var sensorId = this.route.snapshot.paramMap.get('id');
-
-		if (!sensorId)
-			return;
-
-		this.sensorService.getTodaysSensorMeasurments(sensorId).subscribe(data => {
-			this.sensorData = this.transformData(data);
-			// console.log(this.sensorData[0]);
+		var sensorId = this.route.snapshot.paramMap.get('id')!;
+		this.sensorService.getSensorById(sensorId).subscribe(data => {
+			this.sensor = data;
 		});
+	}
 
-		// Subscribe to sensor measurement updates. The webapi will push updates to the client when new measurements are available.
-		this.sensorHub.subscribeToSensor(sensorId);
-		this.sensorHub.getSensorUpdates().subscribe((update) => {
-			console.log(update);
-			if (update)
-			{
-				var transformedData = this.transformData([update]);
-				transformedData.forEach((measurement) => {
-					this.updateData(measurement);
+	edit(): void {
+		this.isEditing = true;
+		console.log('Edit sensor');
+	}
+
+	submit(): void {
+		this.isSubmitting = true;
+		this.submitError = false;
+		
+		this.sensorService.updateSensor(this.sensor)
+		.subscribe({
+			complete: () => {
+				this.reload(() => {
+					this.isSubmitting = false;
+					this.isEditing = false;
 				});
+			},
+			error: (error) => {
+				this.submitError = true;
+				this.isSubmitting = false;
 			}
 		});
 	}
 
-	ngOnDestroy(): void {
-		var sensorId = this.route.snapshot.paramMap.get('id');
-
-		if (!sensorId)
-			return;
-
-		this.sensorHub.unsubscribeFromSensor(sensorId);
+	cancel(): void {
+		this.isEditing = false;
+		this.submitError = false;
+		console.log('Cancel sensor');
 	}
 
-	trackByMeasurement(index: number, measurement: TransformedMeasurement): string {
-		return measurement.name;
-	}
+	private reload(callback: () => void): void {
+		this.sensorService.getSensorById(this.sensor.id).subscribe(data => {
+			this.sensor = data;
 
-	xAxisDateFormatter = (timestamp: string): string => {
-		return this.datePipe.transform(timestamp, 'HH:mm') as string;
-	}
-
-	/**
-	 * Transforms the sensor data into a format that can be visualized in a chart.
-	 * @param data 
-	 * @returns 
-	 */
-	private transformData(data: SensorMeasurements[]): TransformedMeasurement[] {
-		return Object.keys(data[0].measurements).map((measurementName) => ({
-			name: measurementName,
-			series: data.map((item) => ({
-				name: this.datePipe.transform(item.timestamp, 'short') as string,
-				value: item.measurements[measurementName as keyof typeof item.measurements]
-			}))
-		}));
-	}
-
-	/**
-	 * Updates the sensor data array with new measurements.
-	 * 
-	 * If a measurement with the same name as `newData` exists, it updates the series of that measurement
-	 * by appending the new series data. If no matching measurement is found, it adds `newData` as a new chart.
-	 * 
-	 * @param newData - The new measurement data to be added or used to update existing data. @see `transformData` for the expected format of `newData`.
-	 */
-	private updateData(newData: TransformedMeasurement): void {
-		const existingMeasurement = this.sensorData.find(measurement => measurement.name === newData.name);
-
-		if (existingMeasurement) {
-			// If a matching measurement is found, update its series
-			this.sensorData = this.sensorData.map((measurement) => {
-				if (measurement.name === newData.name) {
-					return {
-						...measurement,
-						series: [
-							...measurement.series,
-							{
-								name: newData.series[0].name,
-								value: newData.series[0].value
-							}
-						]
-					};
-				} else {
-					return measurement;
-				}
-			});
-		} else {
-			// If no matching measurement, add newData as a new chart
-			this.sensorData = [
-				...this.sensorData,
-				{
-					name: newData.name,
-					series: newData.series
-				}
-			];
-		}
+			callback();
+		});
 	}
 }

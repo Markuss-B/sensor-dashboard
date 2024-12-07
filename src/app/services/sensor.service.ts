@@ -8,7 +8,6 @@ import { SensorMeasurements } from '../models/sensor-measurements';
   providedIn: 'root'
 })
 export class SensorService {
-  
   private apiUrl = 'http://localhost:5223/api/Sensor';
 
   constructor(private http: HttpClient) {}
@@ -23,5 +22,9 @@ export class SensorService {
 
   getTodaysSensorMeasurments(sensorId: string): Observable<SensorMeasurements[]> {
     return this.http.get<SensorMeasurements[]>(`${this.apiUrl}/${sensorId}/measurements/today`);
+  }
+
+  updateSensor(sensor: Sensor): Observable<Sensor> {
+	  return this.http.put<Sensor>(`${this.apiUrl}/${sensor.id}`, sensor);
   }
 }
