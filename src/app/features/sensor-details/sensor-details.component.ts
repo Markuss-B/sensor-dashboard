@@ -3,9 +3,12 @@ import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
 import { SensorService } from '../../services/sensor.service';
 import { SensorMeasurements } from '../../models/sensor-measurements';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SensorHubService } from '../../services/sensor-hub.service';
 
+/**
+ * Represents a transformed sensor measurement data that is ready to be visualized in a chart.
+ */
 interface TransformedMeasurement {
 	name: string;
 	series: { name: string; value: string }[];
@@ -14,16 +17,22 @@ interface TransformedMeasurement {
 @Component({
 	selector: 'app-sensor-details',
 	standalone: true,
-	imports: [CommonModule, NgxChartsModule],
+	imports: [CommonModule, DatePipe, NgxChartsModule],
 	templateUrl: './sensor-details.component.html',
-	styleUrls: ['./sensor-details.component.css']
+	styleUrls: ['./sensor-details.component.css'],
 })
+
+/**
+ * The SensorDetailsComponent is responsible for displaying and updating sensor data in a chart format.
+ * It subscribes to sensor data updates and transforms the data for visualization.
+ */
 export class SensorDetailsComponent {
 
 	constructor(
 		private sensorService: SensorService,
 		private route: ActivatedRoute,
-		private sensorHub: SensorHubService
+		private sensorHub: SensorHubService,
+		private datePipe: DatePipe
 	) { }
 
 	sensorData: TransformedMeasurement[] = [];
@@ -44,9 +53,9 @@ export class SensorDetailsComponent {
 		if (!sensorId)
 			return;
 
-		this.sensorService.getSensorMeasurments(sensorId).subscribe(data => {
+		this.sensorService.getTodaysSensorMeasurments(sensorId).subscribe(data => {
 			this.sensorData = this.transformData(data);
-			console.log(this.sensorData[0]);
+			// console.log(this.sensorData[0]);
 		});
 
 		this.sensorHub.subscribeToSensor(sensorId);
@@ -54,7 +63,12 @@ export class SensorDetailsComponent {
 		this.sensorHub.getSensorUpdates().subscribe((update) => {
 			console.log(update);
 			if (update)
-				this.updateData(this.transformData([update])[0]);
+			{
+				var transformedData = this.transformData([update]);
+				transformedData.forEach((measurement) => {
+					this.updateData(measurement);
+				});
+			}
 		});
 	}
 
@@ -75,64 +89,50 @@ export class SensorDetailsComponent {
 		return Object.keys(data[0].measurements).map((measurementName) => ({
 			name: measurementName,
 			series: data.map((item) => ({
-				name: item.timestamp.toString(),
+				name: this.datePipe.transform(item.timestamp, 'HH:mm') as string,
 				value: item.measurements[measurementName as keyof typeof item.measurements]
 			}))
 		}));
 	}
 
-	updateData(newData: TransformedMeasurement): void {
-		{
-			const existingMeasurement = this.sensorData.find(measurement => measurement.name === newData.name);
+	/**
+	 * Updates the sensor data array with new measurements.
+	 * 
+	 * If a measurement with the same name as `newData` exists, it updates the series of that measurement
+	 * by appending the new series data. If no matching measurement is found, it adds `newData` as a new chart.
+	 * 
+	 * @param newData - The new measurement data to be added or used to update existing data. @see `transformData` for the expected format of `newData`.
+	 */
+	private updateData(newData: TransformedMeasurement): void {
+		const existingMeasurement = this.sensorData.find(measurement => measurement.name === newData.name);
 
-			if (existingMeasurement) {
-				// If a matching measurement is found, update its series
-				this.sensorData = this.sensorData.map((measurement) => {
-					if (measurement.name === newData.name) {
-						return {
-							...measurement,
-							series: [
-								...measurement.series,
-								{
-									name: newData.series[0].name,
-									value: newData.series[0].value
-								}
-							]
-						};
-					} else {
-						return measurement;
-					}
-				});
-			} else {
-				// If no matching measurement, add newData as a new chart
-				this.sensorData = [
-					...this.sensorData,
-					{
-						name: newData.name,
-						series: newData.series
-					}
-				];
-			}
-		}
-	}
-
-	lastdate = new Date('2025-10-03');
-
-	addMockData() {
-		// Increment last date correctly by 1 day
-		this.lastdate.setDate(this.lastdate.getDate() + 1);
-		const lastdateString = this.lastdate.toString();
-
-		const newData: TransformedMeasurement = {
-			name: 'temp',
-			series: [
-				{
-					name: lastdateString,
-					value: Math.floor(Math.random() * 100).toString()
+		if (existingMeasurement) {
+			// If a matching measurement is found, update its series
+			this.sensorData = this.sensorData.map((measurement) => {
+				if (measurement.name === newData.name) {
+					return {
+						...measurement,
+						series: [
+							...measurement.series,
+							{
+								name: newData.series[0].name,
+								value: newData.series[0].value
+							}
+						]
+					};
+				} else {
+					return measurement;
 				}
-			]
-		};
-
-		this.updateData(newData);
+			});
+		} else {
+			// If no matching measurement, add newData as a new chart
+			this.sensorData = [
+				...this.sensorData,
+				{
+					name: newData.name,
+					series: newData.series
+				}
+			];
+		}
 	}
 }

@@ -21,11 +21,7 @@ export class SensorService {
     return this.http.get<Sensor>(`${this.apiUrl}/${sensorId}`);
   }
 
-  getLatestSensorMeasurment(sensorId: string): Observable<SensorMeasurements> {
-    return this.http.get<SensorMeasurements>(`${this.apiUrl}/${sensorId}/latestmeasurment`);
-  }
-
-  getSensorMeasurments(sensorId: string, dateFrom?: Date, dateTo?: Date): Observable<SensorMeasurements[]> {
-    return this.http.get<SensorMeasurements[]>(`${this.apiUrl}/${sensorId}/measurments?dateFrom=${dateFrom ?? ''}&dateTo=${dateTo ?? ''}`);
+  getTodaysSensorMeasurments(sensorId: string): Observable<SensorMeasurements[]> {
+    return this.http.get<SensorMeasurements[]>(`${this.apiUrl}/${sensorId}/measurements/today`);
   }
 }
