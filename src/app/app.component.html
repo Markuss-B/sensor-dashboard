@@ -1,9 +1,14 @@
-<h1>Angular Router App</h1>
-<nav>
-  <ul>
-    <li><a routerLink="/sensors" routerLinkActive="active" ariaCurrentWhenActive="page">Sensors list Component</a></li>
-    <li><a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page">Dashboard Component</a></li>
-  </ul>
+<nav class="navbar navbar-expand-lg bg- border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/"><i class="bi bi-vignette"></i> Sākums</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/sensors" routerLinkActive="active" ariaCurrentWhenActive="page"><i class="bi bi-database"></i> Sensoru saraksts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 <!-- The routed views render in the <router-outlet>-->
 <div class="container-fluid">

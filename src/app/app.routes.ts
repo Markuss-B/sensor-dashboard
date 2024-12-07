@@ -5,7 +5,7 @@ import { SensorDetailsComponent } from './features/sensor-details/sensor-details
 
 export const routes: Routes = [
   { path: 'sensors', component: SensorListComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  // { path: 'dashboard', component: DashboardComponent },
   { path: 'sensor/:id', component: SensorDetailsComponent },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
+  { path: '', redirectTo: '/sensors', pathMatch: 'full' }
 ]

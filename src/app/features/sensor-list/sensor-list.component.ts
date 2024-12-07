@@ -38,7 +38,7 @@ export class SensorListComponent {
   
   handleAction(event: { action: string, row: any }) {
     console.log(event);
-    if (event.action === 'View') {
+    if (event.action === 'Skatīt') {
       this.router.navigate(['/sensor', event.row.id]);
     }
   }
