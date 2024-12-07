@@ -5,11 +5,14 @@
     [xAxis]="true"
     [yAxis]="true"
     [legend]="true"
+    [legendPosition]="legendPosition"
     [showXAxisLabel]="true"
     [showYAxisLabel]="true"
     xAxisLabel="Date"
     yAxisLabel="Value"
     [rotateXAxisTicks]="true"
+    [xAxisTickFormatting]="xAxisDateFormatter"
+    [wrapTicks]="false"
     [autoScale]="true">
   </ngx-charts-line-chart>
 </div>

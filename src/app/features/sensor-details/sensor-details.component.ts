@@ -5,6 +5,7 @@ import { SensorMeasurements } from '../../models/sensor-measurements';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SensorHubService } from '../../services/sensor-hub.service';
+import { LegendPosition } from '@swimlane/ngx-charts';
 
 /**
  * Represents a transformed sensor measurement data that is ready to be visualized in a chart.
@@ -36,6 +37,8 @@ export class SensorDetailsComponent {
 	) { }
 
 	sensorData: TransformedMeasurement[] = [];
+
+	legendPosition = LegendPosition.Right; // Position of the legend
 
 	// Color scheme for the chart
 	colorScheme: Color = {
@@ -83,6 +86,9 @@ export class SensorDetailsComponent {
 		return measurement.name;
 	}
 
+	xAxisDateFormatter = (timestamp: string): string => {
+		return this.datePipe.transform(timestamp, 'HH:mm') as string;
+	}
 
 	/**
 	 * Transforms the sensor data into a format that can be visualized in a chart.
@@ -93,7 +99,7 @@ export class SensorDetailsComponent {
 		return Object.keys(data[0].measurements).map((measurementName) => ({
 			name: measurementName,
 			series: data.map((item) => ({
-				name: this.datePipe.transform(item.timestamp, 'HH:mm') as string,
+				name: this.datePipe.transform(item.timestamp, 'short') as string,
 				value: item.measurements[measurementName as keyof typeof item.measurements]
 			}))
 		}));
