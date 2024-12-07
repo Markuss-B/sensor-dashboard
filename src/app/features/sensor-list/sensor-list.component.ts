@@ -28,8 +28,12 @@ export class SensorListComponent {
 
   tableColumns = [
     { key: 'id', label: 'Id' },
-    { key: 'name', label: 'Name' },
-    { key: 'group', label: 'Group' }
+    { key: 'name', label: 'Nosaukums' },
+    { key: 'location', label: 'Atrašanāš vieta' },
+    { key: 'baseSerialNumber', label: 'Bāzes satcijas numurs' },
+    { key: 'group', label: 'Grupa' },
+    { key: 'productNumber', label: 'Produkta numurs' },
+    { key: 'rootTopic', label: 'Saknes tēma' }
   ];
   
   handleAction(event: { action: string, row: any }) {
