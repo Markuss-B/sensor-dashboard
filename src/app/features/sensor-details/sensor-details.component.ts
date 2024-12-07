@@ -50,7 +50,7 @@ export class SensorDetailsComponent {
 	submit(): void {
 		this.isSubmitting = true;
 		this.submitError = false;
-		
+
 		this.sensorService.updateSensor(this.sensor)
 		.subscribe({
 			complete: () => {
@@ -62,6 +62,7 @@ export class SensorDetailsComponent {
 			error: (error) => {
 				this.submitError = true;
 				this.isSubmitting = false;
+				console.error('Error updating sensor', error);
 			}
 		});
 	}

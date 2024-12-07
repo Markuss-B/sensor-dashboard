@@ -25,6 +25,6 @@ export class SensorService {
   }
 
   updateSensor(sensor: Sensor): Observable<Sensor> {
-	  return this.http.put<Sensor>(`${this.apiUrl}/${sensor.id}`, sensor);
+	  return this.http.put<Sensor>(`${this.apiUrl}`, sensor);
   }
 }
