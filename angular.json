@@ -5,6 +5,9 @@
   "projects": {
     "SensorDashboard": {
       "projectType": "application",
+      "i18n": {
+        "sourceLocale": "lv"
+      },
       "schematics": {
         "@schematics/angular:component": {
           "path": "src/app/features",
