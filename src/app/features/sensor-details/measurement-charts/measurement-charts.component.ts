@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SensorMeasurements } from '@models/sensor-measurements';
 import { SensorHubService } from '@services/sensor-hub.service';
@@ -21,11 +21,14 @@ interface TransformedMeasurement {
   templateUrl: './measurement-charts.component.html',
   styleUrl: './measurement-charts.component.css'
 })
-export class MeasurementChartsComponent {
+
+/**
+ * Component for visualizing sensor measurements in a charts.
+ */
+export class MeasurementChartsComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private sensorService: SensorService,
-		private route: ActivatedRoute,
 		private sensorHub: SensorHubService,
 		private datePipe: DatePipe
 	) { }
@@ -44,6 +47,9 @@ export class MeasurementChartsComponent {
 		domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
 	};
 
+	/**
+	 * Initializes the component by fetching the sensor data and subscribing to sensor updates.
+	 */
 	ngOnInit(): void {
 		this.sensorService.getTodaysSensorMeasurments(this.sensorId).subscribe(data => {
 			this.sensorData = this.transformData(data);
@@ -65,13 +71,22 @@ export class MeasurementChartsComponent {
 	}
 
 	ngOnDestroy(): void {
-    this.sensorHub.unsubscribeFromSensor(this.sensorId);
+    	this.sensorHub.unsubscribeFromSensor(this.sensorId);
 	}
 
+	/**
+	 * Custom trackBy function for the ngFor directive.
+	 * Enables animations when adding/removing measurements from the chart.
+	 */
 	trackByMeasurement(index: number, measurement: TransformedMeasurement): string {
 		return measurement.name;
 	}
 
+	/**
+	 * Custom formatter for the X-axis of the chart.
+	 * @param timestamp string
+	 * @returns "HH:mm" formatted string
+	 */
 	xAxisDateFormatter = (timestamp: string): string => {
 		return this.datePipe.transform(timestamp, 'HH:mm') as string;
 	}
