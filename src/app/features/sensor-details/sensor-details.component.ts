@@ -29,7 +29,7 @@ export class SensorDetailsComponent {
 		private route: ActivatedRoute,
 	) { }
 
-	sensor!: Sensor;
+	sensor: Sensor;
 
 	isEditing: boolean = false;
 	isSubmitting: boolean = false;

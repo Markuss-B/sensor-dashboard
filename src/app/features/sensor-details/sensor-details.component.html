@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="sensor">
 
   <div class="col-4">
     <div class="sensor sticky">
@@ -72,5 +72,5 @@
   </div>
 
 
-  <app-measurement-charts [sensorId]="sensor.id" class="col-8"></app-measurement-charts>
+  <app-measurement-charts class="col-8"></app-measurement-charts>
 </div>

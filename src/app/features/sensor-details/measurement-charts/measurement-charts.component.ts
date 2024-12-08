@@ -30,15 +30,14 @@ export class MeasurementChartsComponent implements OnInit, OnDestroy {
 	constructor(
 		private sensorService: SensorService,
 		private sensorHub: SensorHubService,
-		private datePipe: DatePipe
+		private datePipe: DatePipe,
+		private route: ActivatedRoute
 	) { }
 
-  @Input() sensorId!: string;
-
+	sensorId: string;
 	sensorData: TransformedMeasurement[] = [];
 
 	legendPosition = LegendPosition.Right; // Position of the legend
-
 	// Color scheme for the chart
 	colorScheme: Color = {
 		name: 'customScheme',
@@ -51,9 +50,11 @@ export class MeasurementChartsComponent implements OnInit, OnDestroy {
 	 * Initializes the component by fetching the sensor data and subscribing to sensor updates.
 	 */
 	ngOnInit(): void {
+		this.sensorId = this.route.snapshot.paramMap.get('id')!;
+
 		this.sensorService.getTodaysSensorMeasurments(this.sensorId).subscribe(data => {
 			this.sensorData = this.transformData(data);
-			// console.log(this.sensorData[0]);
+			console.log(this.sensorData);
 		});
 
 		// Subscribe to sensor measurement updates. The webapi will push updates to the client when new measurements are available.
