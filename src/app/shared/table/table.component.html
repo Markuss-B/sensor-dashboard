@@ -16,13 +16,21 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of filteredData">
-        <td *ngFor="let col of columns">{{ row[col.key] }}</td>
+        <td *ngFor="let col of columns">
+          <ng-container *ngIf="isArray(row[col.key]); else normalCell">
+            <ul class="list">
+              <li *ngFor="let item of row[col.key]">{{ item }}</li>
+            </ul>
+          </ng-container>
+          <ng-template #normalCell>
+            {{ row[col.key] }}
+          </ng-template>
+        </td>
         <td *ngIf="actions.length">
           <button
             *ngFor="let action of actions"
             class="btn btn-link"
-            (click)="onActionClick(action, row)"
-          >
+            (click)="onActionClick(action, row)">
             {{ action }}
           </button>
         </td>

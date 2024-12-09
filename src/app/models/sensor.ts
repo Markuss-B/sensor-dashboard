@@ -2,12 +2,17 @@ import { SensorMeasurements } from "./sensor-measurements";
 
 export interface Sensor {
     id: string;
+    topics: string[];
     location: string;
-    baseSerialNumber: string;
-    rootTopic: string;
     name: string;
     productNumber: string;
     group: string;
     groupId: string;
-    sensorMeasurements: SensorMeasurements[];
+    isActive?: boolean | null;
+}
+
+export interface SensorUpdateDto {
+    id: string;
+    location: string;
+    isActive: boolean;
 }

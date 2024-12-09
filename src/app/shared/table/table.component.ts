@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './table.component.css'
 })
 export class TableComponent {
-  @Input() columns: { key: string, label: string }[] = [];
+  @Input() columns: { key: string, label: string, list?: boolean }[] = [];
   @Input() data: any[] = [];
   @Input() actions: string[] = [];
   @Output() actionClick = new EventEmitter<{ action: string, row: any }>();
@@ -29,6 +29,10 @@ export class TableComponent {
         (row[col.key] ?? '').toString().toLowerCase().includes(this.searchTerm.toLowerCase())
       )
     );
+  }
+
+  isArray(value: any) {
+    return Array.isArray(value);
   }
 }
 

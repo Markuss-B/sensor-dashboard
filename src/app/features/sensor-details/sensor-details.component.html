@@ -47,13 +47,6 @@
         </div>
 
         <div class="row details-item">
-          <label>Bāzes stacijas numurs</label>
-          <div>
-            <span>{{ sensor.baseSerialNumber }}</span>
-          </div>
-        </div>
-
-        <div class="row details-item">
           <label>Produkta numurs</label>
           <div>
             <span>{{ sensor.productNumber }}</span>
@@ -64,6 +57,13 @@
           <label>Grupa</label>
           <div>
             <span>{{ sensor.group }}</span>
+          </div>
+        </div>
+
+        <div class="row details-items">
+          <label>MQTT tēmas</label>
+          <div>
+            <span *ngFor="let topic of sensor.topics">{{ topic }}</span>
           </div>
         </div>
 
