@@ -1,6 +1,6 @@
 <div class="row" *ngIf="sensor">
 
-  <div class="col-4">
+  <div class="{{ sensor.isActive ? 'col-4' : 'col-md-6 offset-md-3' }}">
     <div class="sensor sticky">
 
       <div class="actions">
@@ -79,5 +79,5 @@
   </div>
 
 
-  <app-measurement-charts class="col-8"></app-measurement-charts>
+  <app-measurement-charts class="col-8" *ngIf="sensor.isActive"></app-measurement-charts>
 </div>

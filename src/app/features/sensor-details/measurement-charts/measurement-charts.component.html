@@ -1,3 +1,6 @@
+<!-- heading  -->
+<h2 class="text-center">Šodienas mērījumu grafiki</h2>
+
 <div *ngFor="let measurement of sensorData; trackBy: trackByMeasurement">
     <ngx-charts-line-chart
       [scheme]="colorScheme"
