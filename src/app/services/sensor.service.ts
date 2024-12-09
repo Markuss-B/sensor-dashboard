@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Sensor } from '../models/sensor';
+import { Sensor, SensorUpdateDto } from '../models/sensor';
 import { SensorMeasurements } from '../models/sensor-measurements';
 
 @Injectable({
@@ -43,7 +43,7 @@ export class SensorService {
    * Updates a sensor in the webapi (currently only updates location).
    * @param sensor 
    */
-  updateSensor(sensor: Sensor): Observable<Sensor> {
+  updateSensor(sensor: SensorUpdateDto): Observable<Sensor> {
 	  return this.http.put<Sensor>(`${this.apiUrl}`, sensor);
   }
 }

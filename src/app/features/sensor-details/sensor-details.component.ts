@@ -7,7 +7,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { SensorHubService } from '../../services/sensor-hub.service';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { MeasurementChartsComponent } from "./measurement-charts/measurement-charts.component";
-import { Sensor } from '@models/sensor';
+import { Sensor, SensorUpdateDto } from '@models/sensor';
 import { FormGroup } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
@@ -30,6 +30,7 @@ export class SensorDetailsComponent {
 	) { }
 
 	sensor: Sensor;
+	sensorUpdateModel: SensorUpdateDto;
 
 	isEditing: boolean = false;
 	isSubmitting: boolean = false;
@@ -43,6 +44,12 @@ export class SensorDetailsComponent {
 	}
 
 	edit(): void {
+		this.sensorUpdateModel = {
+			id: this.sensor.id,
+			location: this.sensor.location,
+			isActive: this.sensor.isActive,
+		};
+
 		this.isEditing = true;
 		console.log('Edit sensor');
 	}
@@ -51,7 +58,7 @@ export class SensorDetailsComponent {
 		this.isSubmitting = true;
 		this.submitError = false;
 
-		this.sensorService.updateSensor(this.sensor)
+		this.sensorService.updateSensor(this.sensorUpdateModel)
 		.subscribe({
 			complete: () => {
 				this.reload(() => {

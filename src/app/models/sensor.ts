@@ -8,11 +8,11 @@ export interface Sensor {
     productNumber: string;
     group: string;
     groupId: string;
-    isActive?: boolean | null;
+    isActive: boolean | null;
 }
 
 export interface SensorUpdateDto {
     id: string;
     location: string;
-    isActive: boolean;
+    isActive: boolean | null;
 }

@@ -61,5 +61,14 @@ header {
         & span {
             font-weight: 600;
         }
+
+        & ul {
+            padding-left: 0;
+            list-style: none;
+
+            & li {
+                font-weight: 600;
+            }
+        }
     }
 }
