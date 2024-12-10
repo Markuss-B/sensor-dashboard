@@ -23,7 +23,7 @@
             </ul>
           </ng-container>
           <ng-template #normalCell>
-            {{ row[col.key] }}
+            {{ formatCell(row[col.key], col.format) }}
           </ng-template>
         </td>
         <td *ngIf="actions.length">

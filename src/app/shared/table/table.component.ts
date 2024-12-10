@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './table.component.css'
 })
 export class TableComponent {
-  @Input() columns: { key: string, label: string, list?: boolean }[] = [];
+  @Input() columns: { key: string, label: string, format?: (value: any) => string }[] = [];
   @Input() data: any[] = [];
   @Input() actions: string[] = [];
   @Output() actionClick = new EventEmitter<{ action: string, row: any }>();
@@ -33,6 +33,10 @@ export class TableComponent {
 
   isArray(value: any) {
     return Array.isArray(value);
+  }
+
+  formatCell(value: any, format?: (value: any) => string) {
+    return format ? format(value) : value;
   }
 }
 

@@ -22,8 +22,7 @@ export class SensorListComponent {
   ngOnInit(): void {
     this.sensorService.getSensors().subscribe(sensors => {
       this.sensors = sensors;
-    }
-    );
+    });
   }
 
   tableColumns = [
@@ -32,8 +31,8 @@ export class SensorListComponent {
     { key: 'location', label: 'Atrašanās vieta' },
     { key: 'group', label: 'Grupa' },
     { key: 'productNumber', label: 'Produkta numurs' },
-    { key: 'topics', label: 'Tēmas',},
-    { key: 'isActive', label: 'Aktīvs' },
+    { key: 'topics', label: 'Tēmas'},
+    { key: 'isActive', label: 'Aktīvs', format: (isActive: boolean) => isActive ? 'Jā' : 'Nē' },
   ];
   
   handleAction(event: { action: string, row: any }) {
