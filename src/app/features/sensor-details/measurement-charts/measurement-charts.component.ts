@@ -1,5 +1,5 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule, DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
+import { Component, Input, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SensorMeasurements } from '@models/sensor-measurements';
 import { SensorHubService } from '@services/sensor-hub.service';
@@ -53,6 +53,7 @@ export class MeasurementChartsComponent implements OnInit, OnDestroy {
 		this.sensorId = this.route.snapshot.paramMap.get('id')!;
 
 		this.sensorService.getTodaysSensorMeasurments(this.sensorId).subscribe(data => {
+			console.log(data);
 			this.sensorData = this.transformData(data);
 			console.log(this.sensorData);
 		});
@@ -101,7 +102,7 @@ export class MeasurementChartsComponent implements OnInit, OnDestroy {
 		return Object.keys(data[0].measurements).map((measurementName) => ({
 			name: measurementName,
 			series: data.map((item) => ({
-				name: this.datePipe.transform(item.timestamp, 'short') as string,
+				name: this.datePipe.transform(item.timestamp, 'YYYY-MM-dd HH:mm:ss') as string,
 				value: item.measurements[measurementName as keyof typeof item.measurements]
 			}))
 		}));
