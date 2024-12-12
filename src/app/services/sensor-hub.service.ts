@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { SensorMeasurements } from '../models/sensor-measurements';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,7 +16,7 @@ export class SensorHubService {
 	private sensorMeasurementsSubject = new BehaviorSubject<SensorMeasurements | null>(null);
 	private connectionPromise: Promise<void>;
 
-	private hubUrl = 'http://localhost:5223/sensorhub';
+	private hubUrl = environment.apiUrl +'/api/sensorhub';
 
 	/**
 	 * Initializes the SensorHubService by creating a SignalR hub connection.

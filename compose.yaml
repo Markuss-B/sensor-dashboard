@@ -1,0 +1,17 @@
+services:
+  sensor-dashboard:
+    container_name: sensor-dashboard
+    build: .
+    image: sensor-dashboard
+    ports:
+      - "127.0.0.1:80:80"
+    expose:
+      - 80
+    environment:
+      - API_URL=http://host.docker.internal:5223
+    networks:
+      - sensor-network
+
+networks:
+  sensor-network:
+    external: true

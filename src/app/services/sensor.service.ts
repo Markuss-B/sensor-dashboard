@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Sensor, SensorUpdateDto } from '../models/sensor';
 import { SensorMeasurements } from '../models/sensor-measurements';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ import { SensorMeasurements } from '../models/sensor-measurements';
  * Service for fetching sensor data from the webapi.
  */
 export class SensorService {
-  private apiUrl = 'http://localhost:5223/api/Sensor';
-
+  private apiUrl = environment.apiUrl + '/api/sensor';
+  
   constructor(private http: HttpClient) {}
 
   /**
