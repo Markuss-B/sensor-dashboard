@@ -2,7 +2,8 @@ name: sensor
 
 services:
   sensor-dashboard:
-    image: sensor-dashboard-dev
+    # image: sensor-dashboard-dev
+    build: ../
     container_name: sensor-dashboard-dev
     ports:
       - "127.0.0.1:80:80"
