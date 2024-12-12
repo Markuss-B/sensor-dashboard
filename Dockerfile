@@ -9,7 +9,7 @@ RUN npm run build
 
 # Stage 2
 FROM nginx:stable
-COPY default.conf /etc/nginx/conf.d
+COPY default.conf /etc/nginx/templates/default.conf.template
 COPY --from=node /app/dist/sensor-dashboard/browser /usr/share/nginx/html
 
 EXPOSE 80
