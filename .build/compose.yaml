@@ -1,3 +1,5 @@
+name: sensor
+
 services:
   sensor-dashboard:
     image: sensor-dashboard-dev
@@ -7,7 +9,7 @@ services:
     expose:
       - 80
     environment:
-      - API_URL=http://host.docker.internal:5223
+      - API_URL=http://sensor-webapi-dev:80
     networks:
       - sensor-network
 
