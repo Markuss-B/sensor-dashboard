@@ -22,17 +22,28 @@ export class SensorListComponent {
   ngOnInit(): void {
     this.sensorService.getSensors().subscribe(sensors => {
       this.sensors = sensors;
+
+      // Convert metadata to string for display
+      sensors.forEach(sensor => {
+        if (sensor.metadata != undefined) {
+          sensor.metadata = Object.entries(sensor.metadata).map(([key, value]) => `${key}: ${value}`);
+        }
+
+        if (sensor.latestMeasurements != undefined) {
+          sensor.latestMeasurements = Object.entries(sensor.latestMeasurements).map(([key, value]) => `${key}: ${value}`);
+        }
+      });
+
+      console.log(sensors);
     });
   }
 
   tableColumns = [
     { key: 'id', label: 'Id' },
-    { key: 'name', label: 'Nosaukums' },
     { key: 'location', label: 'Atrašanās vieta' },
-    { key: 'group', label: 'Grupa' },
-    { key: 'productNumber', label: 'Produkta numurs' },
-    { key: 'topics', label: 'Tēmas'},
     { key: 'isActive', label: 'Aktīvs', format: (isActive: boolean) => isActive ? 'Jā' : 'Nē' },
+    { key: 'metadata', label: 'Metadati'},
+    { key: 'latestMeasurements', label: 'Pēdējie mērījumi'}
   ];
   
   handleAction(event: { action: string, row: any }) {
@@ -41,4 +52,5 @@ export class SensorListComponent {
       this.router.navigate(['/sensor', event.row.id]);
     }
   }
+  
 }

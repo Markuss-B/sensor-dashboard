@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Metadata and LatestMeasuremnets fields to sensor list, which are dynamic and unknown at compile time (is that correct term?).
 
 ## [2.0.0]
 - First release version 2.0.0 along side first releases to production for webapi, dashboard, courier. Consumer had first release in 1.0.0.

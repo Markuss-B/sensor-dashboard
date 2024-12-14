@@ -2,13 +2,11 @@ import { SensorMeasurements } from "./sensor-measurements";
 
 export interface Sensor {
     id: string;
-    topics: string[];
     location: string;
-    name: string;
-    productNumber: string;
-    group: string;
-    groupId: string;
     isActive: boolean;
+    topics: string[];
+    metadata: Record<string, string> | string[];
+    latestMeasurements: Record<string, string> | string[];
 }
 
 export interface SensorUpdateDto {
