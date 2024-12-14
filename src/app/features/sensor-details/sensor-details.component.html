@@ -37,40 +37,32 @@
 
       <div class="sensor-details" *ngIf="!isEditing">
 
-        <div class="details-item">
-          <label>Nosaukums</label>
-          <div>
-            <span>{{sensor.name}}</span>
-          </div>
-        </div>
-
         <div class="row details-item">
           <label>Atrašanās vieta</label>
           <div>
-            <span>{{sensor.location}}</span>
+            <span *ngIf="sensor.location; else noData">{{ sensor.location}}</span>
           </div>
         </div>
 
         <div class="row details-item">
-          <label>Produkta numurs</label>
+          <label>Metadati</label>
           <div>
-            <span>{{ sensor.productNumber }}</span>
-          </div>
-        </div>
-
-        <div class="row details-item">
-          <label>Grupa</label>
-          <div>
-            <span>{{ sensor.group }}</span>
+            <ng-container *ngIf="metadata; else noData">
+              <ul>
+                <li *ngFor="let data of metadata">{{ data }}</li>
+              </ul>
+            </ng-container>
           </div>
         </div>
 
         <div class="row details-item">
           <label>MQTT tēmas</label>
           <div>
-            <ul>
-              <li *ngFor="let topic of sensor.topics">{{ topic }}</li>
-            </ul>
+            <ng-container *ngIf="sensor.topics; else noData">
+              <ul>
+                <li *ngFor="let topic of sensor.topics">{{ topic }}</li>
+              </ul>
+            </ng-container>
           </div>
         </div>
 
@@ -81,3 +73,7 @@
 
   <app-measurement-charts class="col-8" *ngIf="sensor.isActive"></app-measurement-charts>
 </div>
+
+<ng-template #noData>
+  <span>-</span>
+</ng-template>

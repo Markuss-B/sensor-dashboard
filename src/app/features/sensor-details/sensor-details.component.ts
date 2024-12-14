@@ -30,6 +30,7 @@ export class SensorDetailsComponent {
 	) { }
 
 	sensor: Sensor;
+	metadata: string[];
 	sensorUpdateModel: SensorUpdateDto;
 
 	isEditing: boolean = false;
@@ -40,6 +41,11 @@ export class SensorDetailsComponent {
 		var sensorId = this.route.snapshot.paramMap.get('id')!;
 		this.sensorService.getSensorById(sensorId).subscribe(data => {
 			this.sensor = data;
+
+			// Convert metadata to string for display
+			if (this.sensor.metadata != undefined) {
+				this.metadata = Object.entries(this.sensor.metadata).map(([key, value]) => `${key}: ${value}`);
+			}
 		});
 	}
 
