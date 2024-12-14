@@ -22,6 +22,11 @@
           <input type="text" class="form-control" name="location" [(ngModel)]="sensorUpdateModel.location" required>
         </div>
 
+        <div class="form-group">
+          <label for="description">Apraksts</label>
+          <textarea class="form-control" name="description" [(ngModel)]="sensorUpdateModel.description"></textarea>
+        </div>
+
         <div class="form-actions">
           <button class="btn btn-secondary" type="button" (click)="cancel()" *ngIf="isEditing"><i class="bi bi-x-circle-fill"></i></button>
           <button class="btn btn-success" type="submit" *ngIf="isEditing && !isSubmitting"><i class="bi bi-floppy-fill"></i></button>
@@ -40,7 +45,14 @@
         <div class="row details-item">
           <label>Atrašanās vieta</label>
           <div>
-            <span *ngIf="sensor.location; else noData">{{ sensor.location}}</span>
+            <span *ngIf="sensor.location; else noData">{{ sensor.location }}</span>
+          </div>
+        </div>
+
+        <div class="row details-item">
+          <label>Apraksts</label>
+          <div>
+            <span *ngIf="sensor.description; else noData">{{ sensor.description }}</span>
           </div>
         </div>
 

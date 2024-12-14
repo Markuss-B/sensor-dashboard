@@ -54,6 +54,7 @@ export class SensorDetailsComponent {
 			id: this.sensor.id,
 			location: this.sensor.location,
 			isActive: this.sensor.isActive,
+			description: this.sensor.description
 		};
 
 		this.isEditing = true;
