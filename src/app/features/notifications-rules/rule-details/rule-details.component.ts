@@ -63,7 +63,7 @@ export class RuleDetailsComponent {
 
     this.rule.measurement = parts[0];
     this.rule.operator = parts[1];
-    this.rule.value = parseInt(parts[2]);
+    this.rule.value = parseFloat(parts[2]);
 
     if (!this.validRuleString(this.rule.ruleString)) {
       this.submitError = true;

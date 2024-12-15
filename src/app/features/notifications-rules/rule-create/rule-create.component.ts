@@ -51,7 +51,7 @@ export class RuleCreateComponent {
     var parts = this.rule.ruleString.split(' ');
     this.rule.measurement = parts[0];
     this.rule.operator = parts[1];
-    this.rule.value = parseInt(parts[2]);
+    this.rule.value = parseFloat(parts[2]);
 
     this.notificationsService.createNotificationRule(this.rule)
       .subscribe({
