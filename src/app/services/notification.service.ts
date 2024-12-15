@@ -9,7 +9,7 @@ import { NotificationRule } from '@models/notification-rule';
   providedIn: 'root'
 })
 export class NotificationService {
-  private apiUrl = environment.apiUrl + '/api/notification';
+  private apiUrl = environment.apiUrl + '/api/notifications';
   
   constructor(private http: HttpClient) { }
 
@@ -32,7 +32,7 @@ export class NotificationService {
   }
 
   createNotificationRule(rule: NotificationRule): Observable<NotificationRule> {
-    return this.http.post<NotificationRule>(`${this.apiUrl}/rules`, rule);
+    return this.http.post<NotificationRule>(`${this.apiUrl}/rules/new`, rule);
   }
 
   deleteNotificationRule(ruleId: string): Observable<NotificationRule> {

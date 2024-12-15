@@ -1,1 +1,6 @@
-<p>notifications works!</p>
+<app-table
+    [columns]="tableColumns"
+    [data]="notifications"
+    [actions]="['Skatīt noteikumu']"
+    (actionClick)="handleAction($event)"
+></app-table>

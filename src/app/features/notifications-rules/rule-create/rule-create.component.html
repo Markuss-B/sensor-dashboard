@@ -1,0 +1,43 @@
+<div class="row">
+
+    <div class="col-md-6 offset-md-3">
+        <div class="rule">
+
+            <header>
+                <h1>Jauna noteikuma izveide</h1>
+            </header>
+
+            <form #ruleForm="ngForm" (ngSubmit)="submit()">
+                <div class="form-group">
+                    <label for="name">Nosaukums</label>
+                    <input type="text" class="form-control" name="name" [(ngModel)]="rule.name">
+                </div>
+
+                <div class="form-group">
+                    <label for="sensorId">Saistītais sensors (neobligāts)</label>
+                    <input type="text" class="form-control" name="sensorId" [(ngModel)]="rule.sensorId">
+                </div>
+
+                <div class="form-group has-validation">
+                    <label for="measurement">Nosacījums</label>
+                    <input type="text" class="form-control" name="measurement" [(ngModel)]="rule.ruleString" required>
+                    <div>
+                        Piemēri: "temperature > 20", "battery < 10"
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-success" type="submit" *ngIf="!isSubmitting"><i
+                            class="bi bi-floppy-fill"></i></button>
+                    <button class="btn btn-success" type="button" *ngIf="isSubmitting" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+                <div class="alert alert-danger" *ngIf="submitError">
+                    Neizdevās saglabāt izmaiņas
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

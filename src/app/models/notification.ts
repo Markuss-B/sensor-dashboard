@@ -6,5 +6,4 @@ export interface Notification {
     message: string;
     timestamp: Date;
     rule: NotificationRule;
-    isAcknowledged: boolean;
 }

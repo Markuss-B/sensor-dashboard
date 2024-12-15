@@ -1,0 +1,9 @@
+<!-- Add rule button -->
+<button mat-raised-button color="primary" (click)="addRule()">Pievienot noteikumu</button>
+
+<app-table
+  [columns]="tableColumns"
+  [data]="rules"
+  [actions]="['Skatīt', 'Dzēst']"
+  (actionClick)="handleAction($event)"
+></app-table>

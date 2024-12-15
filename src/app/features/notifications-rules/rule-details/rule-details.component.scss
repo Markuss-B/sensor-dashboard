@@ -1,0 +1,78 @@
+.details-item {
+    margin-bottom: 24px;
+
+    &>label {
+        line-height: 20px;
+    }
+
+    &>div {
+        line-height: 28px;
+    }
+}
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+.actions {
+    float: right;
+
+    & button {
+        margin-left: 10px;
+    }
+}
+
+.form-actions {
+    // align to the fight
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    & button {
+        margin-left: 10px;
+    }
+}
+
+.rule {
+    background-color: #f8f9fa;
+    /* Light background color */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+}
+
+header {
+    & h1 {
+        font-size: 1.5em;
+        color: #343a40;
+        margin-bottom: 20px;
+    }
+}
+
+.details-item {
+    margin-bottom: 15px;
+
+    & label {
+        font-weight: 500;
+    }
+
+    & div {
+        margin-left: 10px;
+
+        & span {
+            font-weight: 600;
+        }
+
+        & ul {
+            padding-left: 0;
+            list-style: none;
+
+            & li {
+                font-weight: 600;
+            }
+        }
+    }
+}
