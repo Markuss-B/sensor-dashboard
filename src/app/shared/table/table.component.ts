@@ -13,6 +13,7 @@ export class TableComponent {
   @Input() columns: { key: string, label: string, format?: (value: any) => string }[] = [];
   @Input() data: any[] = [];
   @Input() actions: string[] = [];
+  @Input() showActions: boolean = true;
   @Output() actionClick = new EventEmitter<{ action: string, row: any }>();
 
   searchTerm: string = '';

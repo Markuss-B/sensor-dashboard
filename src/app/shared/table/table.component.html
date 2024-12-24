@@ -11,7 +11,7 @@
     <thead>
       <tr>
         <th *ngFor="let col of columns">{{ col.label }}</th>
-        <th *ngIf="actions.length">Darbības</th>
+        <th *ngIf="actions.length && showActions">Darbības</th>
       </tr>
     </thead>
     <tbody>
@@ -26,7 +26,7 @@
             {{ formatCell(row[col.key], col.format) }}
           </ng-template>
         </td>
-        <td *ngIf="actions.length">
+        <td *ngIf="actions.length && showActions">
           <button
             *ngFor="let action of actions"
             class="btn btn-link"

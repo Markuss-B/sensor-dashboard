@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="rule?.id">
 
     <div class="col-md-6 offset-md-3">
         <div class="rule sticky">
@@ -73,11 +73,11 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="rule?.id">
     <div>
         <h2>Paziņojumi</h2>
 
-        <app-notifications [inputNotifications]="rule.notifications"></app-notifications>
+        <app-notifications [inputNotifications]="rule.notifications" [showActions]="false"></app-notifications>
     </div>  
 </div>
 
