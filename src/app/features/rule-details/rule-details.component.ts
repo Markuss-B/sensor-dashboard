@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationRule } from '@models/notification-rule';
 import { NotificationService } from '@services/notification.service';
-import { TableComponent } from "../../../shared/table/table.component";
-import { NotificationsComponent } from "../../notifications/notifications.component";
+import { TableComponent } from "../../shared/table/table.component";
+import { NotificationsComponent } from "../notifications/notifications.component";
 import { CommonModule } from '@angular/common';
 
 @Component({

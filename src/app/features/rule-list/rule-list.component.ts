@@ -5,13 +5,13 @@ import { NotificationService } from '@services/notification.service';
 import { TableComponent } from "../../shared/table/table.component";
 
 @Component({
-  selector: 'app-notifications-rules',
+  selector: 'app-rule-list',
   standalone: true,
   imports: [TableComponent],
-  templateUrl: './notifications-rules.component.html',
-  styleUrl: './notifications-rules.component.css'
+  templateUrl: './rule-list.component.html',
+  styleUrl: './rule-list.component.css'
 })
-export class NotificationsRulesComponent {
+export class RuleListComponent {
   constructor(private notitifactionService: NotificationService, private router: Router) { }
 
   rules: NotificationRule[] = [];
