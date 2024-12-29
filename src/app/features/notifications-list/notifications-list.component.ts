@@ -6,13 +6,13 @@ import { TableComponent } from "../../shared/table/table.component";
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-notifications',
+  selector: 'app-notifications-list',
   standalone: true,
   imports: [TableComponent],
-  templateUrl: './notifications.component.html',
-  styleUrl: './notifications.component.css'
+  templateUrl: './notifications-list.component.html',
+  styleUrl: './notifications-list.component.css'
 })
-export class NotificationsComponent {
+export class NotificationsListComponent {
   constructor(private notitifactionService: NotificationService, private router: Router, private datePipe: DatePipe) { }
 
   @Input() inputNotifications: Notification[] = [];

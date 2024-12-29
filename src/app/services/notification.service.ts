@@ -31,12 +31,12 @@ export class NotificationService {
     return this.http.get<NotificationRule>(`${this.apiUrl}/rules/${ruleId}`);
   }
 
-  createNotificationRule(rule: NotificationRule): Observable<NotificationRule> {
-    return this.http.post<NotificationRule>(`${this.apiUrl}/rules/new`, rule);
+  createNotificationRule(rule: NotificationRule): Observable<any> {
+    return this.http.post(`${this.apiUrl}/rules/new`, rule);
   }
 
-  deleteNotificationRule(ruleId: string): Observable<NotificationRule> {
-    return this.http.delete<NotificationRule>(`${this.apiUrl}/rules/${ruleId}`);
+  deleteNotificationRule(ruleId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/rules/${ruleId}`);
   }
 
   updateNotificationRule(rule: NotificationRule): Observable<NotificationRule> {

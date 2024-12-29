@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationRule } from '@models/notification-rule';
 import { NotificationService } from '@services/notification.service';
 import { TableComponent } from "../../shared/table/table.component";
-import { NotificationsComponent } from "../notifications/notifications.component";
+import { NotificationsListComponent } from "@features/notifications-list/notifications-list.component";
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-rule-details',
   standalone: true,
-  imports: [FormsModule, TableComponent, NotificationsComponent, CommonModule],
+  imports: [FormsModule, TableComponent, NotificationsListComponent, CommonModule],
   templateUrl: './rule-details.component.html',
   styleUrl: './rule-details.component.scss'
 })
@@ -20,7 +20,7 @@ export class RuleDetailsComponent {
     private route: ActivatedRoute,
     private router: Router
   ) { }
-
+  
   rule: NotificationRule;
 
   isEditing: boolean = false;

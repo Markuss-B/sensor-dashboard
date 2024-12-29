@@ -44,7 +44,7 @@ export class SensorService {
    * Updates a sensor in the webapi (currently only updates location).
    * @param sensor 
    */
-  updateSensor(sensor: SensorUpdateDto): Observable<Sensor> {
-	  return this.http.put<Sensor>(`${this.apiUrl}`, sensor);
+  updateSensor(sensor: SensorUpdateDto): Observable<any> {
+	  return this.http.patch(`${this.apiUrl}`, sensor);
   }
 }
