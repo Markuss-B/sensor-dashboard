@@ -11,6 +11,8 @@ services:
       - 80
     environment:
       - API_URL=http://sensor-webapi-dev:80
+    volumes:
+      - .htpasswd:/etc/nginx/.htpasswd
     networks:
       - sensor-network
 
