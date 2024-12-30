@@ -52,6 +52,7 @@ export class MeasurementChartsComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.sensorId = this.route.snapshot.paramMap.get('id')!;
 
+		// Gets todays measurements
 		this.sensorService.getTodaysSensorMeasurments(this.sensorId).subscribe(data => {
 			console.log(data);
 			this.sensorData = this.transformData(data);
