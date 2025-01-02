@@ -15,13 +15,13 @@ import { DatePipe } from '@angular/common';
 export class NotificationsListComponent {
   constructor(private notitifactionService: NotificationService, private router: Router, private datePipe: DatePipe) { }
 
-  @Input() inputNotifications: Notification[] = [];
+  @Input() inputNotifications: Notification[] | undefined = undefined;
   @Input() showActions: boolean = true;
 
   notifications: Notification[] = [];
 
   ngOnInit(): void {
-    if (this.inputNotifications.length === 0) {
+    if (this.inputNotifications === undefined) {
       this.notitifactionService.getNotifications().subscribe(data => {
         this.notifications = data;
       });
