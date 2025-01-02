@@ -18,14 +18,14 @@ export class SensorService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Fetches all sensors from the webapi.
+   * Fetches all sensors.
    */
   getSensors(): Observable<Sensor[]> {
     return this.http.get<Sensor[]>(`${this.apiUrl}`);
   }
 
   /**
-   * Fetches a sensor by its id from the webapi.
+   * Fetches a sensor by its id.
    * @param sensorId 
    */
   getSensorById(sensorId: string): Observable<Sensor> {
@@ -33,7 +33,7 @@ export class SensorService {
   }
 
   /**
-   * Fetches the measurements for a sensor from the webapi.
+   * Fetches the measurements for a sensor.
    * @param sensorId 
    */
   getTodaysSensorMeasurments(sensorId: string): Observable<SensorMeasurements[]> {
@@ -41,7 +41,7 @@ export class SensorService {
   }
 
   /**
-   * Updates a sensor in the webapi (currently only updates location).
+   * Updates a sensor.
    * @param sensor 
    */
   updateSensor(sensor: SensorUpdateDto): Observable<any> {

@@ -26,6 +26,7 @@ export class SensorHubService {
 			.withUrl(this.hubUrl)
 			.build();
 
+		// Handle incoming sensor updates
 		this.hubConnection.on('ReceiveSensorUpdate', (measurement: SensorMeasurements) => {
 			this.sensorMeasurementsSubject.next(measurement);
 		});
@@ -61,6 +62,7 @@ export class SensorHubService {
 	}
 
 	/**
+	 * Returns an observable that emits sensor updates.
 	 * @returns An observable that emits sensor updates.
 	 */
 	getSensorUpdates(): Observable<SensorMeasurements> {

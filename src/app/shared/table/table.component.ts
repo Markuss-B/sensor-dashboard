@@ -22,6 +22,9 @@ export class TableComponent {
     this.actionClick.emit({ action, row });
   }
 
+  /**
+   * Filter data based on search term
+   */
   get filteredData() {
     if (!this.searchTerm) return this.data;
 
@@ -36,6 +39,9 @@ export class TableComponent {
     return Array.isArray(value);
   }
 
+  /**
+   * Formats the cell value according to the column format function
+   */
   formatCell(value: any, format?: (value: any) => string) {
     return format ? format(value) : value;
   }
