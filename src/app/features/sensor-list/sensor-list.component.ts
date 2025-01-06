@@ -20,10 +20,11 @@ export class SensorListComponent {
   sensors: Sensor[] = [];
 
   ngOnInit(): void {
+    // Fetch sensors
     this.sensorService.getSensors().subscribe(sensors => {
       this.sensors = sensors;
 
-      // Convert metadata to string for display
+      // Flatten metadata and latestMeasurements
       sensors.forEach(sensor => {
         if (sensor.metadata != undefined) {
           sensor.metadata = Object.entries(sensor.metadata).map(([key, value]) => `${key}: ${value}`);
@@ -38,6 +39,7 @@ export class SensorListComponent {
     });
   }
 
+  // Defines the table
   tableColumns = [
     { key: 'id', label: 'Id' },
     { key: 'location', label: 'Atrašanās vieta' },
@@ -46,6 +48,7 @@ export class SensorListComponent {
     { key: 'latestMeasurements', label: 'Pēdējie mērījumi'}
   ];
   
+  // Handles the view action when a row is clicked
   handleAction(event: { action: string, row: any }) {
     console.log(event);
     if (event.action === 'Skatīt') {

@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { NotificationRule } from '@models/notification-rule';
 import { NotificationService } from '@services/notification.service';
 
+/**
+ * The RuleCreateComponent is responsible for creating a new rule.
+ */
 @Component({
   selector: 'app-rule-create',
   standalone: true,
@@ -18,6 +21,7 @@ export class RuleCreateComponent {
     private router: Router
   ) { }
 
+  // Initialize an empty rule with template values
   rule: NotificationRule = {
     id: '',
     name: '',
@@ -32,27 +36,34 @@ export class RuleCreateComponent {
   isSubmitting: boolean = false;
   submitError: boolean = false;
 
+  /**
+   * Submits the new rule.
+   */
   submit(): void {
     this.isSubmitting = true;
     this.submitError = false;
 
+    // Empty rule string
     if (this.rule.ruleString == null) {
       this.submitError = true;
       this.isSubmitting = false;
       return;
     }
     
+    // Check if the rule string is valid
     if (!this.validRuleString(this.rule.ruleString)) {
       this.submitError = true;
       this.isSubmitting = false;
       return;
     }
     
+    // Fit the rule string into the rule object
     var parts = this.rule.ruleString.split(' ');
     this.rule.measurement = parts[0];
     this.rule.operator = parts[1];
     this.rule.value = parseFloat(parts[2]);
 
+    // Create the rule
     this.notificationsService.createNotificationRule(this.rule)
       .subscribe({
         next: (res) => {
@@ -67,6 +78,11 @@ export class RuleCreateComponent {
       });
   }
 
+    /**
+   * Validates a rule string.
+   * @param string User input rule string like 'temperature > 20'
+   * @returns True if the rule string is valid, false otherwise.
+   */
   private validRuleString(string: string): boolean {
     var parts = string.split(' ');
 

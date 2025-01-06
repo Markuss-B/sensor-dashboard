@@ -4,13 +4,12 @@ import { SensorMeasurements } from '../models/sensor-measurements';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'environments/environment';
 
-@Injectable({
-	providedIn: 'root'
-})
-
 /**
  * Service for subscribing to sensor updates from the SensorHub SignalR hub.
  */
+@Injectable({
+	providedIn: 'root'
+})
 export class SensorHubService {
 	private hubConnection: signalR.HubConnection;
 	private sensorMeasurementsSubject = new BehaviorSubject<SensorMeasurements | null>(null);

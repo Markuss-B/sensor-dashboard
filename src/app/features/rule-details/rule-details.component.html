@@ -1,3 +1,4 @@
+<!-- Load the view after fetching the rule -->
 <div class="row" *ngIf="rule?.id">
 
     <div class="col-md-6 offset-md-3">
@@ -12,6 +13,7 @@
                 <h1>Noteikums: {{rule.id}}</h1>
             </header>
 
+            <!-- Rule editing form -->
             <form #ruleForm="ngForm" *ngIf="isEditing" (ngSubmit)="submit()">
                 <div class="form-group">
                     <label for="name">Nosaukums</label>
@@ -46,6 +48,7 @@
                 </div>
             </form>
 
+            <!-- Rule details -->
             <div class="block-details" *ngIf="!isEditing">
 
                 <div class="row details-item">
@@ -73,6 +76,7 @@
     </div>
 </div>
 
+<!-- Related notifications -->
 <div class="row" *ngIf="rule?.id">
     <div>
         <h2>Paziņojumi</h2>
@@ -81,6 +85,7 @@
     </div>  
 </div>
 
+<!-- No data template for details -->
 <ng-template #noData>
     <span>-</span>
 </ng-template>

@@ -1,3 +1,4 @@
+<!-- Loads the view after fetching the sensor data -->
 <div class="row" *ngIf="sensor">
 
   <div class="{{ sensor.isActive ? 'col-4' : 'col-md-6 offset-md-3' }}">
@@ -11,6 +12,7 @@
         <h1>Sensors: {{sensor.id}}</h1>
       </header>
 
+      <!-- Sensor editing form -->
       <form #sensorForm="ngForm" *ngIf="isEditing" (ngSubmit)="submit()">
         <div class="form-check">
           <input type="checkbox" class="form-check-input" name="isActive" [(ngModel)]="sensorUpdateModel.isActive">
@@ -40,6 +42,7 @@
         </div>
       </form>
 
+      <!-- Sensor details -->
       <div class="sensor-details" *ngIf="!isEditing">
 
         <div class="row details-item">
@@ -82,10 +85,11 @@
     </div>
   </div>
 
-
+  <!-- Measurement charts -->
   <app-measurement-charts class="col-8" *ngIf="sensor.isActive"></app-measurement-charts>
 </div>
 
+<!-- No data template for details -->
 <ng-template #noData>
   <span>-</span>
 </ng-template>

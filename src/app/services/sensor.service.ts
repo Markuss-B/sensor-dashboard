@@ -5,13 +5,12 @@ import { Sensor, SensorUpdateDto } from '../models/sensor';
 import { SensorMeasurements } from '../models/sensor-measurements';
 import { environment } from 'environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
-
 /**
  * Service for fetching sensor data from the webapi.
  */
+@Injectable({
+  providedIn: 'root'
+})
 export class SensorService {
   private apiUrl = environment.apiUrl + '/api/sensor';
   

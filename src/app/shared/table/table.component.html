@@ -9,24 +9,29 @@
   
   <table class="table table-bordered">
     <thead>
-      <tr>
+      <!-- Table header contains column names -->
+      <tr> 
         <th *ngFor="let col of columns">{{ col.label }}</th>
         <th *ngIf="actions.length && showActions">Darbības</th>
       </tr>
     </thead>
     <tbody>
+      <!-- Table body contains data rows -->
       <tr *ngFor="let row of filteredData">
         <td *ngFor="let col of columns">
+          <!-- Array data is displayed as list -->
           <ng-container *ngIf="isArray(row[col.key]); else normalCell">
             <ul class="list">
               <li *ngFor="let item of row[col.key]">{{ item }}</li>
             </ul>
           </ng-container>
+          <!-- Other data is displayed as is or formatted if the column has a format function -->
           <ng-template #normalCell>
             {{ formatCell(row[col.key], col.format) }}
           </ng-template>
         </td>
         <td *ngIf="actions.length && showActions">
+          <!-- Display action buttons -->
           <button
             *ngFor="let action of actions"
             class="btn btn-link"

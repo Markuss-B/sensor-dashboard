@@ -14,6 +14,10 @@ interface TransformedMeasurement {
 	series: { name: string; value: string }[]; // name: timestamp, value: measurement value
 }
 
+/**
+ * Component for visualizing sensor measurements in a charts.
+ * Subscribes to sensor updates using SensorHubService and updates the chart when new measurements are available.
+ */
 @Component({
   selector: 'app-measurement-charts',
   standalone: true,
@@ -21,10 +25,6 @@ interface TransformedMeasurement {
   templateUrl: './measurement-charts.component.html',
   styleUrl: './measurement-charts.component.css'
 })
-
-/**
- * Component for visualizing sensor measurements in a charts.
- */
 export class MeasurementChartsComponent implements OnInit, OnDestroy {
 
 	constructor(
@@ -35,7 +35,7 @@ export class MeasurementChartsComponent implements OnInit, OnDestroy {
 	) { }
 
 	sensorId: string;
-	sensorData: TransformedMeasurement[] = [];
+	sensorData: TransformedMeasurement[] = []; // Data for the charts
 
 	legendPosition = LegendPosition.Right; // Position of the legend
 	// Color scheme for the chart
@@ -65,6 +65,7 @@ export class MeasurementChartsComponent implements OnInit, OnDestroy {
 			console.log(update);
 			if (update)
 			{
+				// On update received, transform the data and update the charts
 				var transformedData = this.transformData([update]);
 				transformedData.forEach((measurement) => {
 					this.updateData(measurement);

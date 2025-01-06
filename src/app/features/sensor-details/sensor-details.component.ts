@@ -11,6 +11,10 @@ import { Sensor, SensorUpdateDto } from '@models/sensor';
 import { FormGroup } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
+/**
+ * The SensorDetailsComponent is responsible for displaying the details of a sensor.
+ * It also uses the MeasurementChartsComponent to display the measurements of the sensor.
+ */
 @Component({
 	selector: 'app-sensor-details',
 	standalone: true,
@@ -18,11 +22,6 @@ import { FormsModule } from '@angular/forms';
 	templateUrl: './sensor-details.component.html',
 	styleUrls: ['./sensor-details.component.scss'],
 })
-
-/**
- * The SensorDetailsComponent is responsible for displaying and updating sensor data in a chart format.
- * It subscribes to sensor data updates and transforms the data for visualization.
- */
 export class SensorDetailsComponent {
 	constructor(
 		private sensorService: SensorService,
@@ -31,14 +30,16 @@ export class SensorDetailsComponent {
 
 	sensor: Sensor;
 	metadata: string[];
-	sensorUpdateModel: SensorUpdateDto;
+	sensorUpdateModel: SensorUpdateDto; // Used when editing
 
 	isEditing: boolean = false;
 	isSubmitting: boolean = false;
 	submitError: boolean = false;
 
 	ngOnInit(): void {
+		// Get the sensor id from the route
 		var sensorId = this.route.snapshot.paramMap.get('id')!;
+		// Fetch the sensor
 		this.sensorService.getSensorById(sensorId).subscribe(data => {
 			this.sensor = data;
 
@@ -49,6 +50,9 @@ export class SensorDetailsComponent {
 		});
 	}
 
+	/**
+	 * Enables editing of the sensor.
+	 */
 	edit(): void {
 		this.sensorUpdateModel = {
 			id: this.sensor.id,
@@ -61,6 +65,9 @@ export class SensorDetailsComponent {
 		console.log('Edit sensor');
 	}
 
+	/**
+	 * Submits the sensorUpdateModel to update the sensor data
+	 */
 	submit(): void {
 		this.isSubmitting = true;
 		this.submitError = false;
@@ -81,12 +88,19 @@ export class SensorDetailsComponent {
 		});
 	}
 
+	/**
+	 * Cancels the editing of the sensor.
+	 */
 	cancel(): void {
 		this.isEditing = false;
 		this.submitError = false;
 		console.log('Cancel sensor');
 	}
 
+	/**
+	 * Reloads the sensor data.
+	 * @param callback The callback to call after the sensor has been reloaded.
+	 */
 	private reload(callback: () => void): void {
 		this.sensorService.getSensorById(this.sensor.id).subscribe(data => {
 			this.sensor = data;
