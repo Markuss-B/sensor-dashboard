@@ -1,10 +1,6 @@
 # To run with docker compose
 
-Build image in sensor-consumer project main directory.
-```
-docker build -t sensor-dashboard-dev .
-```
-Modify the `compose.yaml` file to set API_URL.
+Optional: Modify the `compose.yaml` file to set API_URL.
 
 Run the docker compose file in the main directory.
 ```
